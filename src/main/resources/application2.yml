@@ -1,0 +1,16 @@
+spring:
+ profiles:
+  active:dev
+ datasource:
+  url: jdbc:h2:tcp://localhost/~/test
+   username:sa
+   password:xx
+   driver-class-name:org.h2.Driver
+ jpa:
+  database-platform:org.hibernate.dialect.H2Dialect
+  hibernate.ddl-auto:create
+  show-sql:false
+ mvc:
+  view:
+   prefix:/WEB-INF/view/
+   suffix:*.jsp

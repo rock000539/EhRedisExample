@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd"
+	updateCheck="true" monitoring="autodetect" dynamicConfig="true">
+	
+	<cacheManagerPeerProviderFactory
+		class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+		properties="hostName=127.0.0.1,
+		peerDiscovery=automatic,
+		multicastGroupAddress=230.0.0.1,
+		multicastGroupPort=5446,
+		timeToLive=32"
+		propertySeparator="," />
+		
+	<cacheManagerPeerListenerFactory
+		class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+		properties="hostName=127.0.0.1,
+                        port=50003,
+                        remoteObjectPort=50004,
+                        socketTimeoutMillis=120000"
+		propertySeparator="," />
+		
+
+	<diskStore path="java.io.tmpdir" />
+	
+	<defaultCache maxElementsInMemory="10000"
+		maxElementsOnDisk="0" eternal="true" overflowToDisk="true"
+		diskPersistent="false" timeToIdleSeconds="0" timeToLiveSeconds="0"
+		diskSpoolBufferSizeMB="50" diskExpiryThreadIntervalSeconds="120"
+		memoryStoreEvictionPolicy="LFU" />
+
+	<cache name="demo" eternal="false" maxElementsInMemory="6" 
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="1"
+		timeToLiveSeconds="30" memoryStoreEvictionPolicy="CLOCK" />
+
+	<cache name="demoTimeToIdleSeconds" eternal="false"
+		maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+		timeToIdleSeconds="0" timeToLiveSeconds="300"
+		memoryStoreEvictionPolicy="CLOCK" />
+
+	<cache name="demoTimeToLiveSeconds" eternal="false"
+		maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+		timeToIdleSeconds="1" timeToLiveSeconds="30"
+		memoryStoreEvictionPolicy="CLOCK" />
+
+	<cache name="hibernateCache" eternal="false"  maxElementsInMemory="10000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="10000" memoryStoreEvictionPolicy="FIFO" />
+		
+	<cache name="myCache"
+		maxElementsInMemory="200" eternal="false"
+		timeToIdleSeconds="18000" timeToLiveSeconds="0" overflowToDisk="false"
+		diskPersistent="false" memoryStoreEvictionPolicy="LRU">
+				<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=false, replicatePuts=true,
+                                replicatePutsViaCopy=false, replicateUpdates=true,
+                                replicateUpdatesViaCopy=true, replicateRemovals=true" />
+	</cache>
+	
+
+</ehcache>
