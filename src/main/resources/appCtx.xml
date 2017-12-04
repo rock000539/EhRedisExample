@@ -23,10 +23,8 @@
 <!-- 		<property name="cacheManagerName" value="ehcacheManager" /> -->
 <!-- 	</bean> -->
 	
-	<bean id="ehcacheManager"
-		class="com.redixExample.demo.cache.ItcbEhCacheManagerFactoryBeanInstance">
-		<property name="configLocation" value="classpath:ehcache.xml" />
-		<property name="shared" value="true" />
+	<bean id="ehcacheManager" class="com.redixExample.demo.cache.ItcbEhCacheManagerFactoryBeanInstance">
+		<property name="configLocation" value="classpath*:config/ehcache*.xml" />
 		<property name="cacheManagerName" value="ehcacheManager" />
 	</bean>
 

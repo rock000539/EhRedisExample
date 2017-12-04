@@ -43,7 +43,7 @@ public class EhCacheConfig {
 	}
 
 	//ItcbEhCach 初始化方法
-//	@Bean
+	@Bean
 	public ItcbEhCacheManagerFactoryBean itcbEhCacheManagerFactoryBean() {
 		ItcbEhCacheManagerFactoryBean cmfb = new ItcbEhCacheManagerFactoryBean();
 		Jaxb2Marshaller ehcacheMarshaller = new Jaxb2Marshaller();

@@ -17,16 +17,15 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 public class EhRedisCache implements Cache {
 	private static final Logger LOG = LoggerFactory.getLogger(EhRedisCache.class);
-	
+	@Autowired
 	private net.sf.ehcache.CacheManager cacheManager;
 
 	private String name;
-	
+	@Autowired
 	private net.sf.ehcache.Cache ehCache;
 
 	private RedisTemplate<String, Object> redisTemplate;
@@ -59,14 +58,15 @@ public class EhRedisCache implements Cache {
 				if (value == null) {
 					return null;
 				}
-				// 每次取得，重置緩存過期時間
+
 				if (liveTime > 0) {
 					connection.expire(key, liveTime);
 				}
 				return toObject(value);
 			}
 		}, true);
-		ehCache.put(new Element(key, objectValue));// 取出來後緩存到本地
+		// 取出來後緩存到本地
+		ehCache.put(new Element(key, objectValue));
 		LOG.info("Cache L2 (redis) :{}={}", key, objectValue);
 		return (objectValue != null ? new SimpleValueWrapper(objectValue) : null);
 

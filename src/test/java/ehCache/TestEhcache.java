@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.redixExample.demo.Application;
@@ -19,9 +21,7 @@ import net.sf.ehcache.Element;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class TestEhcache {
-	@Autowired
 	private CacheManager cacheManager;
-	
 	private Cache demoCache; 
 	private Cache demoTimeToIdleSeconds; 
 	private Cache demoTimeToLiveSeconds; 
@@ -29,6 +29,14 @@ public class TestEhcache {
 	private Integer maxElements;
 	@Before
 	public void setUp() {
+		ApplicationContext context = new ClassPathXmlApplicationContext("appCtx.xml");
+		cacheManager=(CacheManager)context.getBean("ehcacheManager");
+		
+		String[] cas = cacheManager.getCacheNames();
+		for(String name:cas) {
+			System.out.println(" name =="+name);
+		}
+		
 		maxElements=10;
 		demoCache = cacheManager.getCache("demo");
 		demoTimeToIdleSeconds = cacheManager.getCache("demoTimeToIdleSeconds");
