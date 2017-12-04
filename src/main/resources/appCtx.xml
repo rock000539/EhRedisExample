@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"  
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
-    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"  
-    xmlns:cache="http://www.springframework.org/schema/cache"  
-    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
             http://www.springframework.org/schema/beans/spring-beans-4.1.xsd  
             http://www.springframework.org/schema/context  
             http://www.springframework.org/schema/context/spring-context-4.1.xsd  
@@ -11,12 +11,20 @@
             http://www.springframework.org/schema/aop/spring-aop-4.1.xsd  
             http://www.springframework.org/schema/cache  
             http://www.springframework.org/schema/cache/spring-cache-4.1.xsd">
-            
-		<!--指定當前所使用的 CacheManager 對應的 bean 的名稱 -->
-       <cache:annotation-driven cache-manager="ehRedisCacheManager" proxy-target-class="true"  />       
-        
+
+	<!--指定當前所使用的 CacheManager 對應的 bean 的名稱 -->
+	<cache:annotation-driven cache-manager="ehRedisCacheManager"
+		proxy-target-class="true" />
+
+<!-- 	<bean id="ehcacheManager" -->
+<!-- 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"> -->
+<!-- 		<property name="configLocation" value="classpath:ehcache.xml" /> -->
+<!-- 		<property name="shared" value="true" /> -->
+<!-- 		<property name="cacheManagerName" value="ehcacheManager" /> -->
+<!-- 	</bean> -->
+	
 	<bean id="ehcacheManager"
-		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		class="com.redixExample.demo.cache.ItcbEhCacheManagerFactoryBeanInstance">
 		<property name="configLocation" value="classpath:ehcache.xml" />
 		<property name="shared" value="true" />
 		<property name="cacheManagerName" value="ehcacheManager" />
@@ -26,6 +34,7 @@
 		<property name="cacheName" value="ehCache" />
 		<property name="cacheManager" ref="ehcacheManager" />
 	</bean>
+
 
 	<!-- 加载redis.propertis -->
 	<bean
@@ -56,7 +65,7 @@
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
 		<property name="connectionFactory" ref="redisConnFactory" />
 	</bean>
-	
+
 
 	<bean id="ehRedisCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 		<property name="caches">
@@ -65,7 +74,7 @@
 					<property name="redisTemplate" ref="redisTemplate" />
 					<property name="ehCache" ref="ehCache" />
 					<property name="name" value="userCache" />
-					<!-- <property name="liveTime" value="3600"/> -->
+					<property name="liveTime" value="3600" />
 				</bean>
 			</set>
 		</property>

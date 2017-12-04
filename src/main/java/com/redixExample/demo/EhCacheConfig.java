@@ -22,18 +22,18 @@ import generated.Cache;
 import generated.Ehcache;
 import net.sf.itcb.addons.cachemanager.ItcbEhCacheManagerFactoryBean;
 
-@Configuration
+//@Configuration
 public class EhCacheConfig {
 
 	//Spring Cache 初始化方法
-//	@Bean
+	@Bean
 	public CacheManager cacheManager()  {
 //		 return new EhCacheCacheManager(ehCacheCacheManager().getObject());
 		return new EhCacheCacheManager(itcbEhCacheManagerFactoryBean().getObject());
 	}
 
 	//EhCache 初始化方法
-//	 @Bean
+//	@Bean
 	public EhCacheManagerFactoryBean ehCacheCacheManager() {
 		EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
 		cmfb.setConfigLocation(new ClassPathResource("config/ehcache.xml"));
@@ -61,10 +61,11 @@ public class EhCacheConfig {
 				generated.TimeoutBehavior.class, generated.TimeoutBehaviorType.class, generated.TransactionalMode.class,
 				generated.TransactionManagerLookup.class, generated.WriteModeType.class);
 		try {
+//			cmfb.setConfigLocations("classpath*:ehcache*.xml");
 			cmfb.setEhcacheMarshaller(ehcacheMarshaller);
 			cmfb.setShared(true);
 			cmfb.setConfigLocations("classpath*:config/ehcache*.xml");
-			cmfb.setCacheManagerName("itcbEhCacheManagerFactoryBean");
+//			cmfb.setCacheManagerName("itcbEhCacheManagerFactoryBean");
 			cmfb.afterPropertiesSet();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -96,7 +97,7 @@ public class EhCacheConfig {
 		String path ="classpath*:config/ehcache*.xml";
 		Resource[] result = testJob.getResources(path);
 		for(int i=0;i<result.length;i++) {
-			System.out.println("result["+i+"] =="+result[i].toString());	
+			System.out.println("result["+i+"] ====="+result[i].toString());	
 		}
 		Ehcache ehcache;
 		Ehcache ehcacheToReturn=null;

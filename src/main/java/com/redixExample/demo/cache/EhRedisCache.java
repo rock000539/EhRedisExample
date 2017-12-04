@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.dao.DataAccessException;
@@ -16,19 +17,22 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 public class EhRedisCache implements Cache {
 	private static final Logger LOG = LoggerFactory.getLogger(EhRedisCache.class);
+	
+	private net.sf.ehcache.CacheManager cacheManager;
 
 	private String name;
-
+	
 	private net.sf.ehcache.Cache ehCache;
 
 	private RedisTemplate<String, Object> redisTemplate;
 
 	private long liveTime = 1 * 60 * 60; // 默認1小時=1*60*60
-
+	
 	@Override
 	public String getName() {
 		return this.name;

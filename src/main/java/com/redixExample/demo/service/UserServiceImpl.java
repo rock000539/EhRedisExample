@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
         System.out.println("");
         User user = new User();
         user.setId(id);
-        user.setUserName("tony");
+        user.setUserName("parker");
         user.setPassWord("******");
         user.setSex(Sex.M);
         user.setAge(32);
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         for (int i = 0; i < 5; i++) {
             User user = new User();
             user.setId(i);
-            user.setUserName("tony"+i);
+            user.setUserName("parker"+i);
             user.setPassWord("******");
             user.setSex(sex);
             user.setAge(32+i);
@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    //FIXME 此处将list参数的地址作为key存储，是否有问题？
     @Cacheable("userCache")
     @Override
     public List<User> findByUsers(List<User> users) {
