@@ -25,14 +25,14 @@ import net.sf.itcb.addons.cachemanager.ItcbEhCacheManagerFactoryBean;
 //@Configuration
 public class EhCacheConfig {
 
-	//Spring Cache 初始化方法
+	//Spring Cache 
 	@Bean
 	public CacheManager cacheManager()  {
 //		 return new EhCacheCacheManager(ehCacheCacheManager().getObject());
 		return new EhCacheCacheManager(itcbEhCacheManagerFactoryBean().getObject());
 	}
 
-	//EhCache 初始化方法
+	//EhCache 
 //	@Bean
 	public EhCacheManagerFactoryBean ehCacheCacheManager() {
 		EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
@@ -42,7 +42,7 @@ public class EhCacheConfig {
 		return cmfb;
 	}
 
-	//ItcbEhCach 初始化方法
+	//ItcbEhCach 
 	@Bean
 	public ItcbEhCacheManagerFactoryBean itcbEhCacheManagerFactoryBean() {
 		ItcbEhCacheManagerFactoryBean cmfb = new ItcbEhCacheManagerFactoryBean();

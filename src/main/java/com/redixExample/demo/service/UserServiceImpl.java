@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         user.setPassWord("******");
         user.setSex(Sex.M);
         user.setAge(32);
-        //耗时操作
+
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

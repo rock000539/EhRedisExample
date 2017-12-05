@@ -30,7 +30,7 @@ public class EhRedisCache implements Cache {
 
 	private RedisTemplate<String, Object> redisTemplate;
 
-	private long liveTime = 1 * 60 * 60; // 默認1小時=1*60*60
+	private long liveTime = 1 * 60 * 60; 
 	
 	@Override
 	public String getName() {
@@ -49,7 +49,7 @@ public class EhRedisCache implements Cache {
 		if (value != null) {
 			return (value != null ? new SimpleValueWrapper(value.getObjectValue()) : null);
 		}
-		// TODO 訪問10次EhCache 強制訪問一次redis 使得數據不失效
+
 		final String keyStr = key.toString();
 		Object objectValue = redisTemplate.execute(new RedisCallback<Object>() {
 			public Object doInRedis(RedisConnection connection) throws DataAccessException {
@@ -65,7 +65,7 @@ public class EhRedisCache implements Cache {
 				return toObject(value);
 			}
 		}, true);
-		// 取出來後緩存到本地
+
 		ehCache.put(new Element(key, objectValue));
 		LOG.info("Cache L2 (redis) :{}={}", key, objectValue);
 		return (objectValue != null ? new SimpleValueWrapper(objectValue) : null);
@@ -142,7 +142,7 @@ public class EhRedisCache implements Cache {
 	}
 
 	/**
-	 * 描述 : Object轉byte[]. <br>
+	 * depict : Object to byte[]. <br>
 	 * 
 	 * @param obj
 	 * @return
@@ -164,7 +164,7 @@ public class EhRedisCache implements Cache {
 	}
 
 	/**
-	 * 描述 : byte[]轉Object . <br>
+	 * depict : byte[] to Object . <br>
 	 * 
 	 * @param bytes
 	 * @return
