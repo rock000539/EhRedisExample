@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.redixExample.demo.Application;
+import com.redixExample.demo.entity.Item;
+import com.redixExample.demo.service.ItemService;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -21,7 +21,11 @@ import net.sf.ehcache.Element;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class TestEhcache {
+	@Autowired
 	private CacheManager cacheManager;
+	@Autowired
+	private ItemService itemService;
+	
 	private Cache demoCache; 
 	private Cache demoTimeToIdleSeconds; 
 	private Cache demoTimeToLiveSeconds; 
@@ -29,14 +33,6 @@ public class TestEhcache {
 	private Integer maxElements;
 	@Before
 	public void setUp() {
-		ApplicationContext context = new ClassPathXmlApplicationContext("appCtx.xml");
-		cacheManager=(CacheManager)context.getBean("ehcacheManager");
-		
-		String[] cas = cacheManager.getCacheNames();
-		for(String name:cas) {
-			System.out.println(" name =="+name);
-		}
-		
 		maxElements=10;
 		demoCache = cacheManager.getCache("demo");
 		demoTimeToIdleSeconds = cacheManager.getCache("demoTimeToIdleSeconds");
@@ -114,6 +110,26 @@ public class TestEhcache {
 				System.out.println("cacheElement=="+cacheElement);
 			}
 			
+		}
+	}
+	
+		
+	/*For test hibernate second level Cache
+	 * Only for ehcache setting
+	 * */
+//	@Test
+	public void test_hibernateCache() {
+		
+		for(int i=0;i<=maxElements;i++) {
+			Item tempBean=new Item();
+			tempBean.setId(Long.valueOf(i+""));
+			tempBean.setName("ItemName"+i);
+			tempBean.setType("ItemType"+i);
+			itemService.save(tempBean);
+		}
+		
+		for(int i=0;i<=10;i++) {
+			System.out.println(itemService.find(1L).getName());	
 		}
 	}
 	
