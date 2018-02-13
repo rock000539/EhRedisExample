@@ -30,8 +30,8 @@ public class EhRedisCache implements Cache {
 
 	private RedisTemplate<String, Object> redisTemplate;
 
-	private long liveTime = 1 * 60 * 60; 
-	
+	private long liveTime = 1 * 60 * 60;
+
 	@Override
 	public String getName() {
 		return this.name;
@@ -113,6 +113,66 @@ public class EhRedisCache implements Cache {
 		}, true);
 	}
 
+	/**
+	 * depict : Object to byte[]. <br>
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	private byte[] toByteArray(Object obj) {
+		byte[] bytes = null;
+		ByteArrayOutputStream bos = null;
+		ObjectOutputStream oos = null;
+		try {
+			bos = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(bos);
+			oos.writeObject(obj);
+			oos.flush();
+			bytes = bos.toByteArray();
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (oos != null) {
+				oos.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+		}
+		return bytes;
+	}
+
+	/**
+	 * depict : byte[] to Object . <br>
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	private Object toObject(byte[] bytes) {
+		Object obj = null;
+		ByteArrayInputStream bis = null;
+		ObjectInputStream ois = null;
+		try {
+			bis = new ByteArrayInputStream(bytes);
+			ois = new ObjectInputStream(bis);
+			obj = ois.readObject();
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (ois != null) {
+				ois.close();
+			}
+			if (bis != null) {
+				bis.close();
+			}
+		}
+		return obj;
+	}
+
 	public net.sf.ehcache.Cache getEhCache() {
 		return ehCache;
 	}
@@ -139,50 +199,6 @@ public class EhRedisCache implements Cache {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * depict : Object to byte[]. <br>
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	private byte[] toByteArray(Object obj) {
-		byte[] bytes = null;
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
-			oos.writeObject(obj);
-			oos.flush();
-			bytes = bos.toByteArray();
-			oos.close();
-			bos.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		return bytes;
-	}
-
-	/**
-	 * depict : byte[] to Object . <br>
-	 * 
-	 * @param bytes
-	 * @return
-	 */
-	private Object toObject(byte[] bytes) {
-		Object obj = null;
-		try {
-			ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-			ObjectInputStream ois = new ObjectInputStream(bis);
-			obj = ois.readObject();
-			ois.close();
-			bis.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-		}
-		return obj;
 	}
 
 	@Override
